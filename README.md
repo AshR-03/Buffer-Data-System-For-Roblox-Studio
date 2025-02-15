@@ -1,6 +1,6 @@
 # Byte-based Buffer Storage System Module in Lua
 
-This project showcases the effective manipulation of memory blocks to construct a Database system that can solve the problem of table memory overhead. Utilising buffers for byte manipulation, we can significantly reduce the overhead in database systems commonly use in popular Roblox games.
+This project showcases the effective manipulation of memory blocks to construct a Database system that can solve the problem of  [table](https://create.roblox.com/docs/reference/engine/libraries/table) memory overhead. Utilising [buffers](https://create.roblox.com/docs/reference/engine/libraries/buffer) for byte manipulation, we can significantly reduce the overhead in database systems commonly use in popular Roblox games.
 
 ## Project Details
 
@@ -16,3 +16,8 @@ A more detailed approach can be found in the project youtube video:
 [![A NEW way to SAVE PLAYER DATA In Roblox Studio](https://img.youtube.com/vi/ArnSFrDSJvE/hqdefault.jpg)](https://www.youtube.com/watch?v=ArnSFrDSJvE&t=0s)
 
 **A NEW way to SAVE PLAYER DATA In Roblox Studio**
+
+## Local Project Installation Guide
+
+ - Download and open the `dataSystem.rbxl` file from this repository from your local computer. `ServerScriptService` will contain the code required to run the data module.
+ - Copy the folder containing the package, and paste it into `ServerScriptService` of your Current Roblox Studio Environment.
