@@ -32,7 +32,7 @@ Therefore, storing large volumes of Player Data on the **Server** can become cos
 
 ## Local Project Installation and Use
 
- - Download and open the `dataSystem.rbxl` file from this repository from your local computer. `ServerScriptService` will contain the code required to run the data module.
+ - Download and open the `projectFile.rbxl` file from this repository from your local computer. `ServerScriptService` will contain the code required to run the data module.
  - Copy the folder containing the package, and paste it into `ServerScriptService` of your Current Roblox Studio Environment.
  - To Save the required data, edit the `DataManager` module script's DataSizes Table. This table is **never stored** in heap memory for an extended span.
    
