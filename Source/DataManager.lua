@@ -53,8 +53,6 @@ DM.getDataSizes = function() : {[number] : number}
 		[2] = 4;					-- LEVEL
 		[3] = 4;					-- CHECKPOINT
 		
-		[4] = 10;					-- CHECKPOINT
-		
 		-- INVENTORY (30 Slots) ID 4 - 64
 		
 	}
@@ -106,13 +104,17 @@ DM.getMemoryAddress = function(map : buffer, idToFind : number) : (any, any)
 end
 
 DM.writeData = function(b : buffer, id : number, f : any, data : number | string)
+	
+	print(`Writing {data} to {id}`)
+	
 	local address, count = DM.getMemoryAddress(DM.dataSizeMap, id);
+	print(address, count)	
+	
 	f(b, address, data);
 end
 
 DM.readData = function(b : buffer, id : number, isStr : boolean) : any
 	local address, count = DM.getMemoryAddress(DM.dataSizeMap, id);
-	print(address, count)
 	if address then return RWFunctions.getReadFunction(count, isStr)(b, address, count) end;
 	return false;
 end

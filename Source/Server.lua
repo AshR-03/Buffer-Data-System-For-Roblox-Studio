@@ -10,6 +10,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage");
 
 local PlayerData = require(script.ServerStore);
 local DataManager = require(script.DataManager);
+local UnitTests = require(script.UnitTests)
 
 -- CONSTANTS --
 
@@ -18,6 +19,7 @@ local SLOT_OFFSET = 4; -- Offset in the DataSizes table (Inventory starts at ID 
 
 -- EVENTS --
 
+-- Function that will save a cubes position
 local function saveCube(player)
 	
 	local x,y,z = -41.05, 7.45, -13;
@@ -31,15 +33,16 @@ local function saveCube(player)
 	DataManager.writeData(data, 3, buffer.writef32, z);
 	
 	-- Save the Colour
-	--DataManager.writeData(data, 6, buffer.writeu8, r);
-	--DataManager.writeData(data, 7, buffer.writeu8, g);
-	--DataManager.writeData(data, 8, buffer.writeu8, b);
+	DataManager.writeData(data, 6, buffer.writeu8, r);
+	DataManager.writeData(data, 7, buffer.writeu8, g);
+	DataManager.writeData(data, 8, buffer.writeu8, b);
 	
 	-- Save the name
 	DataManager.writeData(data, 4, buffer.writestring, cubeName);
 	
 end
 
+-- Function that will load a cubes position and colour
 local function loadCube(data)
 	
 	local x,y,z = DataManager.readData(data, 3), DataManager.readData(data, 4), DataManager.readData(data, 5);
@@ -66,12 +69,13 @@ local function loadCube(data)
 
 end
 
+-- Function that will save the players leaderstats to the database.
 local function saveLeaderstats(player)
 	local score, level, checkpoint = player.leaderstats.Score.Value, player.leaderstats.Level.Value, player.leaderstats.CheckPoint.Value;
 	local data = PlayerData[player.UserId];
-	DataManager.writeData(data, 1, buffer.writeu16, score);
-	DataManager.writeData(data, 2, buffer.writeu16, level);
-	DataManager.writeData(data, 3, buffer.writeu16, checkpoint);
+	DataManager.writeData(data, 1, buffer.writeu32, score);
+	DataManager.writeData(data, 2, buffer.writeu32, level);
+	DataManager.writeData(data, 3, buffer.writeu32, checkpoint);
 end
 
 -- Add to the inventory slot.
@@ -104,6 +108,7 @@ local function addToInventory(slot : number, itemID : number, quantity : number,
 	return false;
 end
 
+-- Function that will clear the inventory of the player specified, sets all values to 0.
 local function clearInventory(player : Player)
 	for slot = 4, 62, 2 do
 		
@@ -116,6 +121,7 @@ local function clearInventory(player : Player)
 	end
 end
 
+-- Function that will fire when the player joins the Server.
 local playerJoins = function(player : Player)
 
 	print(`{player.Name} joined. Loading data...`);
@@ -125,35 +131,29 @@ local playerJoins = function(player : Player)
 	
 	data = DataManager.updateData(data, playerMap);
 	
-	--DataManager.printData(data, playerMap)
 
 	-- CHOOSE YOUR USE CASE HERE
-	
-	--loadCube(data);
 	
 	PlayerData[player.UserId] = data;
 	
 	--ReplicatedStorage.Events.Leaderstats.Setup:Fire(player);
-
 	--addToInventory(4, 23, 22, player);
-	
 	--clearInventory(player);
 	
-	DataManager.printData(data, playerMap)
+	--DataManager.printData(data, playerMap) -- Prints the data in the buffer to the console
 
 end
 
+-- Function that will fire when the player leaves the server
 local playerLeaves = function(player : any)
 	
 	print(`{player.Name} left the game. Saving data...`);
 	
 	local data = PlayerData[player.UserId];
-	--DataManager.writeData(data, 1, buffer.writestring, "tree");
 	
-	
-	--DataManager.writeData(data, 1, buffer.writef32, 1400000); -- WRITES THE XP
-	--DataManager.writeData(data, 2, buffer.writeu16, 900); -- WRITES THE LEVEL
-	--DataManager.writeData(data, 3, buffer.writeu8, 68); -- WRITES THE CHECKPOINT
+	--DataManager.writeData(data, 1, buffer.writeu32, 1400000); -- WRITES THE XP
+	--DataManager.writeData(data, 2, buffer.writeu32, 900); -- WRITES THE LEVEL
+	--DataManager.writeData(data, 3, buffer.writeu32, 68); -- WRITES THE CHECKPOINT
 	
 	
 	--CHOOSE YOUR USE CASE HERE
@@ -166,7 +166,9 @@ local playerLeaves = function(player : any)
 
 end
 
+-- Event connections for client joins/leaves.
 PlayerService.PlayerAdded:Connect(playerJoins);
 PlayerService.PlayerRemoving:Connect(playerLeaves);
 
+-- Function call for defining the dataSizeMap and dataSize (Size of client record block).
 DataManager.dataSizeMap, DataManager.totalDataSize = DataManager.configureDataSizeMap();
