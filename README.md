@@ -4,7 +4,7 @@ This project showcases the effective manipulation of memory blocks to construct 
 
 ### This Projects aimed to solve the following problems:
 
-- Table overhead whilst stored in ![**heap memory**.](https://create.roblox.com/docs/studio/optimization/memory-usage#luau-heap)
+- Table overhead whilst stored in [**heap memory**.](https://create.roblox.com/docs/studio/optimization/memory-usage#luau-heap)
 - Reduced database **memory usage** per record ensuring more records can be stored.
 - Efficient ID **indirect addressing** and **block allocation** for fast record access.
 
