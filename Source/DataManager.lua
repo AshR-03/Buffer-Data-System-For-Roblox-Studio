@@ -113,9 +113,9 @@ DM.writeData = function(b : buffer, id : number, f : any, data : number | string
 	f(b, address, data);
 end
 
-DM.readData = function(b : buffer, id : number, isStr : boolean) : any
+DM.readData = function(b : buffer, id : number, isStr : boolean, readType : string) : any
 	local address, count = DM.getMemoryAddress(DM.dataSizeMap, id);
-	if address then return RWFunctions.getReadFunction(count, isStr)(b, address, count) end;
+	if address then return RWFunctions.getReadFunction(count, isStr, readType or 'u')(b, address, count) end;
 	return false;
 end
 

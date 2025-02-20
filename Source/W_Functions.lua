@@ -9,16 +9,30 @@ RWFunctions.Write_Size = buffer.writeu8; -- The function that writes the Size to
 RWFunctions.Read_Size = buffer.readu8; -- The function that reads the Size to the dataSizeMap
 
 -- Gets the specified function based on the Size of the Allocated memory (reading index 1 with 4 bytes would return buffer.readu32)
-RWFunctions.getReadFunction = function(size, isStr : boolean?) : any
+RWFunctions.getReadFunction = function(size, isStr : boolean?, readType : string) : any
 
 	local readFunctions = {
-		[1] = buffer.readu8;
-		[2] = buffer.readu16;
-		[4] = buffer.readu32;
-		[8] = buffer.readf64;
+		['u'] = {
+			[1] = buffer.readu8,
+			[2] = buffer.readu16,
+			[4] = buffer.readu32,
+			[8] = nil;
+		},
+		['f'] = {
+			[1] = buffer.readu8,
+			[2] = buffer.readu16,
+			[4] = buffer.readu32,
+			[8] = buffer.readf64
+		},
+		['i'] = {
+			[1] = buffer.readu8,
+			[2] = buffer.readu16,
+			[4] = buffer.readu32,
+			[8] = nil
+		}
 	}
 
-	local sizeFunction = if readFunctions[size] and not isStr then (function(b,o,c) return readFunctions[size](b,o); end) else (function(b,o,c) return buffer.readstring(b,o,c); end)
+	local sizeFunction = if readFunctions[readType][size] and not isStr then (function(b,o,c) return readFunctions[readType][size](b,o); end) else (function(b,o,c) return buffer.readstring(b,o,c); end)
 	return sizeFunction;
 
 end
